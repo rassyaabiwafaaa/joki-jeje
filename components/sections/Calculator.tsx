@@ -1,16 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
+import Image from "next/image";
 import SelectRank from "../ui/SelectRank";
 import { STAR_PRICE } from "../../lib/starPrice";
-import Image from "next/image";
 
-/* ================= TYPES ================= */
 type PackageType = keyof typeof STAR_PRICE;
 type RankType = keyof typeof STAR_PRICE.joki_bintang;
 
-/* ================= RANK CONFIG ================= */
-// Urutan rank (PENTING untuk kalkulasi)
 const RANK_ORDER: RankType[] = [
   "epic",
   "legend",
@@ -20,258 +17,146 @@ const RANK_ORDER: RankType[] = [
   "mythic_immortal",
 ];
 
-// Total bintang per rank
-const RANK_TOTAL_STARS: Record<RankType, number> = {
-  epic: 25,             // Epic V → Epic I
-  legend: 25,           // Legend V → Legend I
-  mythic: 25,           // 0–24
-  mythic_honor: 25,     // 25–49
-  mythic_glory: 50,     // 50–99
-  mythic_immortal: 100, // 100+
-};
+const isTieredRank = (rank: RankType) => rank === "epic" || rank === "legend";
 
 export default function Calculator() {
   const [name, setName] = useState("");
-  const [fromRank, setFromRank] = useState<RankType | "">("");
-  const [toRank, setToRank] = useState<RankType | "">("");
-  const [currentStars, setCurrentStars] = useState(0);
-  const [packageType, setPackageType] =
-    useState<PackageType>("joki_bintang");
+  const [packageType, setPackageType] = useState<PackageType>("joki_bintang");
 
-  /* ================= VALIDATION ================= */
-  const invalidRank =
-    fromRank &&
-    toRank &&
-    RANK_ORDER.indexOf(fromRank) >
-      RANK_ORDER.indexOf(toRank);
+  const [fromRank, setFromRank] = useState<RankType>("epic");
+  const [fromSubTier, setFromSubTier] = useState(5); 
+  const [fromStars, setFromStars] = useState(0);
 
-  /* ================= LOGIC ================= */
-  const calculatePrice = () => {
-    if (!fromRank || !toRank || invalidRank) return 0;
+  const [toRank, setToRank] = useState<RankType>("legend");
+  const [toSubTier, setToSubTier] = useState(5);
+  const [toStars, setToStars] = useState(0);
 
-    const fromIndex = RANK_ORDER.indexOf(fromRank);
-    const toIndex = RANK_ORDER.indexOf(toRank);
-
-    if (fromIndex === -1 || toIndex === -1) return 0;
-
-    // 1️⃣ Hitung total bintang yang dibutuhkan
-    let totalStarsNeeded = 0;
-
-    for (let i = fromIndex; i <= toIndex; i++) {
-      const rank = RANK_ORDER[i];
-
-      if (i === fromIndex) {
-        totalStarsNeeded += Math.max(
-          RANK_TOTAL_STARS[rank] - currentStars,
-          0
-        );
-      } else {
-        totalStarsNeeded += RANK_TOTAL_STARS[rank];
-      }
-    }
-
-    // 2️⃣ Konversi ke harga berdasarkan tier
-    let totalPrice = 0;
-    let remainingStars = totalStarsNeeded;
-
-    for (let i = fromIndex; i <= toIndex; i++) {
-      if (remainingStars <= 0) break;
-
-      const rank = RANK_ORDER[i];
-      const starsAtThisRank = Math.min(
-        remainingStars,
-        RANK_TOTAL_STARS[rank]
-      );
-
-      totalPrice +=
-        starsAtThisRank * STAR_PRICE[packageType][rank];
-
-      remainingStars -= starsAtThisRank;
-    }
-
-    return totalPrice;
+  /* ================= HELPERS ================= */
+  const getMaxStars = (rank: RankType) => {
+    if (isTieredRank(rank)) return 5;
+    if (rank === "mythic") return 24;
+    if (rank === "mythic_honor") return 24; // 25-49
+    if (rank === "mythic_glory") return 49; // 50-99
+    return 999; // Immortal
   };
 
-  const totalPrice = calculatePrice();
+  const handleStarChange = (val: number, rank: RankType, setter: (v: number) => void) => {
+    const max = getMaxStars(rank);
+    if (val < 0) setter(0);
+    else if (val > max) setter(max);
+    else setter(val);
+  };
 
-  /* ================= WHATSAPP ================= */
-  const waMessage = encodeURIComponent(
-    `Halo Admin, saya mau pesan jasa joki ML.
+  const getCumulativeStars = (rank: RankType, sub: number, stars: number) => {
+    let total = 0;
+    if (rank === "legend") total += 25;
+    if (rank === "mythic") total += 50;
+    if (rank === "mythic_honor") total += 75; // 50 + 25
+    if (rank === "mythic_glory") total += 100; // 75 + 25
+    if (rank === "mythic_immortal") total += 150; // 100 + 50
 
-Nama: ${name || "-"}
-Jenis Joki: ${
-      packageType === "joki_bintang" ? "Joki Bintang" : "Joki Gendong"
+    if (isTieredRank(rank)) {
+      const subCompleted = 5 - sub;
+      total += (subCompleted * 5) + stars;
+    } else {
+      total += stars;
     }
-Rank Awal: ${fromRank}
-Rank Akhir: ${toRank}
-Estimasi Harga: Rp ${totalPrice.toLocaleString()}`
-  );
+    return total;
+  };
 
-  const waLink = `https://wa.me/6285782643433?text=${waMessage}`;
+  /* ================= LOGIC ================= */
+  const totalPrice = useMemo(() => {
+    const start = getCumulativeStars(fromRank, fromSubTier, fromStars);
+    const target = getCumulativeStars(toRank, toSubTier, toStars);
+    if (target <= start) return 0;
 
-  /* ================= UI ================= */
+    let cost = 0;
+    for (let s = start; s < target; s++) {
+      cost += STAR_PRICE[packageType][toRank] || 0;
+    }
+    return cost;
+  }, [fromRank, fromSubTier, fromStars, toRank, toSubTier, toStars, packageType]);
+
+  const waLink = useMemo(() => {
+    const text = `Halo Admin, saya mau pesan jasa joki ML.
+    
+Nama: ${name || "-"}
+Jenis Joki: ${packageType === "joki_bintang" ? "Joki Bintang" : "Joki Gendong"}
+Rank Awal: ${fromRank.toUpperCase()} ${isTieredRank(fromRank) ? `Tier ${fromSubTier}` : ""} (${fromStars} ⭐)
+Rank Tujuan: ${toRank.toUpperCase()} ${isTieredRank(toRank) ? `Tier ${toSubTier}` : ""} (${toStars} ⭐)
+Estimasi Harga: Rp ${totalPrice.toLocaleString()}`;
+    
+    return `https://wa.me/6285782643433?text=${encodeURIComponent(text)}`;
+  }, [name, packageType, fromRank, fromSubTier, fromStars, toRank, toSubTier, toStars, totalPrice]);
+
   return (
-    <section className="px-4 py-20 bg-base-200 border-b border-base-300">
+    <section className="px-4 py-20 bg-base-200 min-h-screen">
       <div className="max-w-xl mx-auto">
-        <h2 className="text-3xl font-bold text-center">
-          Kalkulator Harga Joki
-        </h2>
+        <h2 className="text-3xl font-bold text-center">MLBB Rank Calculator</h2>
 
-        <p className="text-sm text-center text-base-content/60 mt-2">
-          1. Pilih Paket → 2. Isi Rank → 3. Lihat Estimasi → 4. Pesan
-        </p>
-
-        {/* SLOT GAMBAR */}
-        <div className="mt-8 flex justify-center">
-          <div className="w-full max-w-3xl rounded-xl overflow-hidden border border-base-300 shadow-sm">
-            {packageType === "joki_bintang" ? (
-              <Image
-                src="/joki-bintang-awal-seasion-39.jpeg"
-                alt="Paket Joki Bintang Season 39"
-                width={1200}
-                height={675}
-                className="w-full h-auto object-cover"
-                priority
-              />
-            ) : (
-              <Image
-                src="/joki-gendong-awal-season.jpeg"
-                alt="Paket Joki Gendong"
-                width={1200}
-                height={675}
-                className="w-full h-auto object-cover"
-                priority
-              />
-            )}
-          </div>
+        <div className="mt-8 rounded-xl overflow-hidden border border-base-300 shadow-lg bg-white">
+          <Image
+            src={packageType === "joki_bintang" ? "/joki-bintang-awal-seasion-39.jpeg" : "/joki-gendong-awal-season.jpeg"}
+            alt="Promo" width={1200} height={675} className="w-full object-cover" priority
+          />
         </div>
 
-        {/* PILIH PAKET */}
         <div className="mt-6 grid grid-cols-2 gap-3">
-          <button
-            className={`btn ${
-              packageType === "joki_bintang"
-                ? "btn-warning"
-                : "btn-outline"
-            }`}
-            onClick={() => setPackageType("joki_bintang")}
-          >
-            Joki Bintang
-          </button>
-          <button
-            className={`btn ${
-              packageType === "joki_gendong"
-                ? "btn-warning"
-                : "btn-outline"
-            }`}
-            onClick={() => setPackageType("joki_gendong")}
-          >
-            Joki Gendong
-          </button>
+          {(["joki_bintang", "joki_gendong"] as PackageType[]).map((type) => (
+            <button key={type} className={`btn ${packageType === type ? "btn-warning" : "btn-outline"}`} onClick={() => setPackageType(type)}>
+              {type.replace("_", " ").toUpperCase()}
+            </button>
+          ))}
         </div>
 
-        {/* NAMA */}
-        <div className="mt-6">
-          <label className="label">
-            <span className="label-text">Nama</span>
-          </label>
-          <input
-            type="text"
-            placeholder="Nama kamu"
-            className="input input-bordered w-full"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
-        </div>
+        <div className="mt-6 space-y-5 bg-base-100 p-6 rounded-2xl shadow-sm">
+          <input className="input input-bordered w-full" placeholder="Nama kamu" value={name} onChange={(e) => setName(e.target.value)} />
 
-        {/* RANK */}
-        <div className="mt-6 space-y-4">
-          <SelectRank
-            label="Rank Awal"
-            value={fromRank}
-            onChange={(val) => setFromRank(val as RankType)}
-            options={RANK_ORDER}
-          />
-
-          <div>
-            <label className="label">
-              <span className="label-text">
-                Bintang Saat Ini (di rank awal)
-              </span>
-            </label>
-            <input
-              type="number"
-              min={0}
-              max={5}
-              disabled={!fromRank}
-              className="input input-bordered w-full"
-              value={currentStars}
-              onChange={(e) =>
-                setCurrentStars(Number(e.target.value))
-              }
-            />
-            <p className="text-xs text-base-content/60 mt-1">
-              Contoh: Epic III ⭐⭐ → isi 2
-            </p>
+          {/* RANK AWAL */}
+          <div className="space-y-2">
+            <label className="text-sm font-semibold opacity-70">Rank Saat Ini</label>
+            <SelectRank value={fromRank} options={RANK_ORDER} onChange={(v) => {
+                const r = v as RankType; setFromRank(r);
+                handleStarChange(fromStars, r, setFromStars);
+            }} />
+            <div className="grid grid-cols-2 gap-2">
+              {isTieredRank(fromRank) && (
+                <select className="select select-bordered" value={fromSubTier} onChange={(e) => setFromSubTier(Number(e.target.value))}>
+                  {[5, 4, 3, 2, 1].map((n) => <option key={n} value={n}>Tier {n === 5 ? 'V' : n === 4 ? 'IV' : n === 3 ? 'III' : n === 2 ? 'II' : 'I'}</option>)}
+                </select>
+              )}
+              <input type="number" className="input input-bordered w-full" placeholder={`Max ${getMaxStars(fromRank)}`} value={fromStars} 
+                onChange={(e) => handleStarChange(Number(e.target.value), fromRank, setFromStars)} />
+            </div>
           </div>
 
-          <SelectRank
-            label="Target Rank"
-            value={toRank}
-            onChange={(val) => setToRank(val as RankType)}
-            options={RANK_ORDER}
-          />
-        </div>
-
-        {/* WARNING */}
-        {invalidRank && (
-          <div className="mt-4 alert alert-warning">
-            <span>
-              Rank akhir harus lebih tinggi atau sama dengan rank awal.
-            </span>
+          {/* RANK TUJUAN */}
+          <div className="space-y-2">
+            <label className="text-sm font-semibold opacity-70">Target Rank</label>
+            <SelectRank value={toRank} options={RANK_ORDER} onChange={(v) => {
+                const r = v as RankType; setToRank(r);
+                handleStarChange(toStars, r, setToStars);
+            }} />
+            <div className="grid grid-cols-2 gap-2">
+              {isTieredRank(toRank) && (
+                <select className="select select-bordered" value={toSubTier} onChange={(e) => setToSubTier(Number(e.target.value))}>
+                  {[5, 4, 3, 2, 1].map((n) => <option key={n} value={n}>Tier {n === 5 ? 'V' : n === 4 ? 'IV' : n === 3 ? 'III' : n === 2 ? 'II' : 'I'}</option>)}
+                </select>
+              )}
+              <input type="number" className="input input-bordered w-full" placeholder={`Max ${getMaxStars(toRank)}`} value={toStars} 
+                onChange={(e) => handleStarChange(Number(e.target.value), toRank, setToStars)} />
+            </div>
           </div>
-        )}
 
-        <p className="text-xs text-center text-base-content/60 mt-2">
-          * Estimasi dihitung hingga rank tujuan dalam kondisi penuh (bintang
-          maksimal). Jika rank awal berada di sub-tier (Epic I–V), detail
-          akan dikonfirmasi ulang oleh admin.
-        </p>
+          <div className="p-4 border border-warning rounded-xl text-center bg-warning/5">
+            <p className="text-xs uppercase text-warning font-bold">Total Estimasi</p>
+            <p className="text-3xl font-bold text-warning font-mono">Rp {totalPrice.toLocaleString()}</p>
+          </div>
 
-        {/* HASIL */}
-        <div className="mt-8 p-6 border border-warning rounded-box text-center">
-          <p className="text-sm uppercase tracking-widest text-warning">
-            Estimasi Harga
-          </p>
-          <p className="text-3xl font-extrabold mt-2 text-warning">
-            Rp {totalPrice.toLocaleString()}
-          </p>
-          {totalPrice > 0 && (
-            <p className="text-sm text-base-content/70 mt-2">
-              Berdasarkan total bintang dari{" "}
-              <strong>{fromRank}</strong> ke{" "}
-              <strong>{toRank}</strong>
-            </p>
-          )}
+          <a href={waLink} target="_blank" className={`btn btn-success btn-lg w-full ${totalPrice === 0 ? "btn-disabled" : ""}`}>
+            Pesan via WhatsApp
+          </a>
         </div>
-
-        {/* CTA */}
-        <a
-          href={waLink}
-          target="_blank"
-          rel="noopener noreferrer"
-          className={`btn btn-success btn-lg w-full mt-6 ${
-            !fromRank || !toRank || totalPrice === 0 || invalidRank
-              ? "btn-disabled"
-              : ""
-          }`}
-        >
-          Pesan & Konsultasi via WhatsApp
-        </a>
-
-        <p className="text-xs text-center text-base-content/60 mt-2">
-          * Harga estimasi, admin akan konfirmasi ulang sebelum proses
-        </p>
       </div>
     </section>
   );
