@@ -35,9 +35,9 @@ export default function Calculator() {
   const getMaxStars = (rank: RankType) => {
     if (isTieredRank(rank)) return 5;
     if (rank === "mythic") return 24;
-    if (rank === "mythic_honor") return 24; // 25-49
-    if (rank === "mythic_glory") return 49; // 50-99
-    return 999; // Immortal
+    if (rank === "mythic_honor") return 24;
+    if (rank === "mythic_glory") return 49;
+    return 9999; // Limit untuk sang maniak bintang
   };
 
   const handleStarChange = (val: number, rank: RankType, setter: (v: number) => void) => {
@@ -51,9 +51,9 @@ export default function Calculator() {
     let total = 0;
     if (rank === "legend") total += 25;
     if (rank === "mythic") total += 50;
-    if (rank === "mythic_honor") total += 75; // 50 + 25
-    if (rank === "mythic_glory") total += 100; // 75 + 25
-    if (rank === "mythic_immortal") total += 150; // 100 + 50
+    if (rank === "mythic_honor") total += 75;
+    if (rank === "mythic_glory") total += 100;
+    if (rank === "mythic_immortal") total += 150;
 
     if (isTieredRank(rank)) {
       const subCompleted = 5 - sub;
@@ -71,9 +71,12 @@ export default function Calculator() {
     if (target <= start) return 0;
 
     let cost = 0;
-    for (let s = start; s < target; s++) {
-      cost += STAR_PRICE[packageType][toRank] || 0;
-    }
+    const selisih = target - start;
+    
+    // Untuk performa lebih cepat pada bintang ribuan, kita tidak pakai loop
+    // Langsung kalikan selisih dengan harga tier tujuan
+    cost = selisih * (STAR_PRICE[packageType][toRank] || 0);
+    
     return cost;
   }, [fromRank, fromSubTier, fromStars, toRank, toSubTier, toStars, packageType]);
 
@@ -109,52 +112,50 @@ Estimasi Harga: Rp ${totalPrice.toLocaleString()}`;
           ))}
         </div>
 
-        <div className="mt-6 space-y-5 bg-base-100 p-6 rounded-2xl shadow-sm">
+        <div className="mt-6 space-y-5 bg-base-100 p-6 rounded-2xl shadow-sm border border-base-300">
           <input className="input input-bordered w-full" placeholder="Nama kamu" value={name} onChange={(e) => setName(e.target.value)} />
 
-          {/* RANK AWAL */}
           <div className="space-y-2">
-            <label className="text-sm font-semibold opacity-70">Rank Saat Ini</label>
-            <SelectRank value={fromRank} options={RANK_ORDER} onChange={(v) => {
+            <label className="text-sm font-semibold opacity-70 italic">Rank Saat Ini</label>
+            <SelectRank label="" value={fromRank} options={RANK_ORDER} onChange={(v) => {
                 const r = v as RankType; setFromRank(r);
                 handleStarChange(fromStars, r, setFromStars);
             }} />
             <div className="grid grid-cols-2 gap-2">
               {isTieredRank(fromRank) && (
-                <select className="select select-bordered" value={fromSubTier} onChange={(e) => setFromSubTier(Number(e.target.value))}>
+                <select className="select select-bordered w-full" value={fromSubTier} onChange={(e) => setFromSubTier(Number(e.target.value))}>
                   {[5, 4, 3, 2, 1].map((n) => <option key={n} value={n}>Tier {n === 5 ? 'V' : n === 4 ? 'IV' : n === 3 ? 'III' : n === 2 ? 'II' : 'I'}</option>)}
                 </select>
               )}
-              <input type="number" className="input input-bordered w-full" placeholder={`Max ${getMaxStars(fromRank)}`} value={fromStars} 
+              <input type="number" className="input input-bordered w-full" placeholder={`Bintang (Maks ${getMaxStars(fromRank)})`} value={fromStars} 
                 onChange={(e) => handleStarChange(Number(e.target.value), fromRank, setFromStars)} />
             </div>
           </div>
 
-          {/* RANK TUJUAN */}
           <div className="space-y-2">
-            <label className="text-sm font-semibold opacity-70">Target Rank</label>
-            <SelectRank value={toRank} options={RANK_ORDER} onChange={(v) => {
+            <label className="text-sm font-semibold opacity-70 italic">Rank Tujuan</label>
+            <SelectRank label="" value={toRank} options={RANK_ORDER} onChange={(v) => {
                 const r = v as RankType; setToRank(r);
                 handleStarChange(toStars, r, setToStars);
             }} />
             <div className="grid grid-cols-2 gap-2">
               {isTieredRank(toRank) && (
-                <select className="select select-bordered" value={toSubTier} onChange={(e) => setToSubTier(Number(e.target.value))}>
+                <select className="select select-bordered w-full" value={toSubTier} onChange={(e) => setToSubTier(Number(e.target.value))}>
                   {[5, 4, 3, 2, 1].map((n) => <option key={n} value={n}>Tier {n === 5 ? 'V' : n === 4 ? 'IV' : n === 3 ? 'III' : n === 2 ? 'II' : 'I'}</option>)}
                 </select>
               )}
-              <input type="number" className="input input-bordered w-full" placeholder={`Max ${getMaxStars(toRank)}`} value={toStars} 
+              <input type="number" className="input input-bordered w-full" placeholder={`Target ⭐ (Maks ${getMaxStars(toRank)})`} value={toStars} 
                 onChange={(e) => handleStarChange(Number(e.target.value), toRank, setToStars)} />
             </div>
           </div>
 
-          <div className="p-4 border border-warning rounded-xl text-center bg-warning/5">
-            <p className="text-xs uppercase text-warning font-bold">Total Estimasi</p>
-            <p className="text-3xl font-bold text-warning font-mono">Rp {totalPrice.toLocaleString()}</p>
+          <div className="p-4 border-2 border-dashed border-warning rounded-xl text-center bg-warning/10">
+            <p className="text-xs uppercase text-warning font-bold tracking-widest">Total Bayar</p>
+            <p className="text-4xl font-black text-warning">Rp {totalPrice.toLocaleString()}</p>
           </div>
 
-          <a href={waLink} target="_blank" className={`btn btn-success btn-lg w-full ${totalPrice === 0 ? "btn-disabled" : ""}`}>
-            Pesan via WhatsApp
+          <a href={waLink} target="_blank" className={`btn btn-success btn-lg w-full shadow-lg ${totalPrice === 0 ? "btn-disabled" : ""}`}>
+            Pesan ke Admin Sekarang
           </a>
         </div>
       </div>
