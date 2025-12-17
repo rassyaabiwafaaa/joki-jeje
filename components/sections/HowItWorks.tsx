@@ -17,14 +17,14 @@ export default function HowItWorks() {
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
           <StepCard
             step={1}
-            title="Pilih Rank"
-            desc="Tentukan rank awal dan target rank kamu"
+            title="Pilih Paket"
+            desc="Tentukan paket joki sesuai kebutuhan kamu"
           />
 
           <StepCard
             step={2}
-            title="Hitung Harga"
-            desc="Harga otomatis sesuai tier dan bintang"
+            title="Dapatkan Harga"
+            desc="Hitung harga joki sesuai rank kamu"
           />
 
           <StepCard

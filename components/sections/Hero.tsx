@@ -9,7 +9,7 @@ export default function Hero() {
         <div>
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight">
             Push Rank Mobile Legends  
-            <span className="block text-primary">
+            <span className="block text-warning">
               Cepat, Aman, & Terpercaya
             </span>
           </h1>
@@ -20,7 +20,7 @@ export default function Hero() {
           </p>
 
           <div className="mt-8 flex flex-col sm:flex-row gap-4">
-            <button className="btn btn-primary btn-lg">
+            <button className="btn btn-success btn-lg">
               Order via WhatsApp
             </button>
 
@@ -32,9 +32,15 @@ export default function Hero() {
 
         {/* RIGHT CONTENT (OPTIONAL) */}
         <div className="hidden lg:flex justify-center">
-          <div className="w-72 h-72 rounded-2xl bg-base-200 flex items-center justify-center text-base-content/50">
-            Ilustrasi / Image
-          </div>
+          <div className="carousel rounded-box w-64">
+  <div className="carousel-item w-full">
+    <img
+      src="/paket-joki-awal-seasion-39.jpeg"
+      className="w-full"
+      alt="Tailwind CSS Carousel component" />
+  </div>
+  
+</div>
         </div>
 
       </div>

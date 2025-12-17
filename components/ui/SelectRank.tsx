@@ -2,19 +2,15 @@ type Props = {
   label: string;
   value: string;
   onChange: (value: string) => void;
+  options: string[];
 };
 
-export default function SelectRank({ label, value, onChange }: Props) {
-  const ranks = [
-    "Warrior",
-    "Elite",
-    "Master",
-    "Grandmaster",
-    "Epic",
-    "Legend",
-    "Mythic",
-  ];
-
+export default function SelectRank({
+  label,
+  value,
+  onChange,
+  options,
+}: Props) {
   return (
     <div>
       <label className="label">
@@ -27,7 +23,8 @@ export default function SelectRank({ label, value, onChange }: Props) {
         onChange={(e) => onChange(e.target.value)}
       >
         <option value="">Pilih Rank</option>
-        {ranks.map((rank) => (
+
+        {options.map((rank) => (
           <option key={rank} value={rank}>
             {rank}
           </option>

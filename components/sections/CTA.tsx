@@ -11,11 +11,11 @@ export default function CTA() {
       <div className="max-w-3xl mx-auto text-center">
 
         <h2 className="text-3xl font-bold">
-          Siap Naik Rank Hari Ini?
+          Mau dapat info promo terupdate?
         </h2>
 
         <p className="mt-4 text-base-content/70">
-          Hitung harga sesuai rank kamu dan langsung chat admin via WhatsApp.
+          Join saluran WhatsApp kami dan dapatkan info promo menarik serta update terbaru seputar layanan joki Mobile Legends.
         </p>
 
         <a
@@ -24,7 +24,7 @@ export default function CTA() {
           rel="noopener noreferrer"
           className="btn btn-success btn-lg mt-8 w-full sm:w-auto"
         >
-          💬 Chat Admin Sekarang
+          Gabung Sekarang
         </a>
       </div>
     </section>

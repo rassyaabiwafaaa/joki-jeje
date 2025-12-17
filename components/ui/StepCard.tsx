@@ -9,7 +9,7 @@ export default function StepCard({ step, title, desc }: Props) {
     <div className="card bg-base-100 shadow text-center">
       <div className="card-body">
 
-        <div className="mx-auto mb-4 w-12 h-12 rounded-full bg-primary text-primary-content flex items-center justify-center text-xl font-bold">
+        <div className="mx-auto mb-4 w-12 h-12 rounded-full bg-warning text-neutral flex items-center justify-center text-xl font-bold">
           {step}
         </div>
 
