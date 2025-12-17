@@ -1,46 +1,79 @@
 import Link from "next/link";
+import Image from "next/image";
 
 export default function Hero() {
   return (
-    <section className="px-4 py-60 bg-base-100">
-      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
-        
+    <section className="relative px-4 py-32 bg-base-100 overflow-hidden">
+      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-14 items-center">
+
         {/* LEFT CONTENT */}
         <div>
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight">
-            Push Rank Mobile Legends  
+          {/* BADGE */}
+          <div className="inline-flex items-center px-4 py-1 rounded-full bg-warning/10 text-warning text-sm font-medium">
+            ⭐ Joki ML Aman & Terpercaya
+          </div>
+
+          {/* TITLE */}
+          <h1 className="mt-6 text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-tight">
+            Push Rank  
             <span className="block text-warning">
-              Cepat, Aman, & Terpercaya
+              Mobile Legends
             </span>
           </h1>
 
-          <p className="mt-5 text-base sm:text-lg text-base-content/70">
-            Capek stuck di rank itu-itu aja?  
-            Serahin ke kami, rank naik tanpa ribet.
+          {/* SUBTITLE */}
+          <p className="mt-6 text-base sm:text-lg text-base-content/70 max-w-xl">
+            Capek stuck di rank yang itu-itu aja?  
+            Serahin ke tim profesional kami, proses cepat,
+            akun aman, dan harga transparan.
           </p>
 
-          <div className="mt-8 flex flex-col sm:flex-row gap-4">
-            <button className="btn btn-success btn-lg">
-              Order via WhatsApp
-            </button>
+          {/* CTA */}
+          <div className="mt-10 flex flex-col sm:flex-row gap-4">
+            <a
+              href="#Calculator"
+              className="btn btn-warning btn-lg"
+            >
+              Hitung Harga Sekarang
+            </a>
 
-            <Link href={`#Packages`} className="btn btn-outline btn-lg">
+            <Link
+              href="#Packages"
+              className="btn btn-outline btn-lg"
+            >
               Lihat Paket
             </Link>
           </div>
+
+          {/* TRUST POINTS */}
+          <div className="mt-12 grid grid-cols-3 gap-4 max-w-md">
+            <div>
+              <p className="text-xl font-bold text-warning">100%</p>
+              <p className="text-sm text-base-content/60">Akun Aman</p>
+            </div>
+            <div>
+              <p className="text-xl font-bold text-warning">Fast</p>
+              <p className="text-sm text-base-content/60">Proses Cepat</p>
+            </div>
+            <div>
+              <p className="text-xl font-bold text-warning">Real</p>
+              <p className="text-sm text-base-content/60">No Cheat</p>
+            </div>
+          </div>
         </div>
 
-        {/* RIGHT CONTENT (OPTIONAL) */}
-        <div className="hidden lg:flex justify-center">
-          <div className="carousel rounded-box w-64">
-  <div className="carousel-item w-full">
-    <img
-      src="/paket-joki-awal-seasion-39.jpeg"
-      className="w-full"
-      alt="Tailwind CSS Carousel component" />
-  </div>
-  
-</div>
+        {/* RIGHT VISUAL */}
+        <div className="flex justify-center lg:justify-end">
+          <div className="relative w-full max-w-md rounded-2xl overflow-hidden border border-base-300 shadow-lg bg-base-200">
+            <Image
+              src="/paket-joki-awal-seasion-39.jpeg"
+              alt="Paket Joki Awal Season 39"
+              width={500}
+              height={500}
+              className="w-full h-auto object-cover"
+              priority
+            />
+          </div>
         </div>
 
       </div>

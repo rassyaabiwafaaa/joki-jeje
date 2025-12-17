@@ -10,7 +10,7 @@ type PackageType = keyof typeof STAR_PRICE;
 type RankType = keyof typeof STAR_PRICE.joki_bintang;
 
 /* ================= RANK CONFIG ================= */
-// urutan rank (PENTING untuk kalkulasi)
+// Urutan rank (PENTING untuk kalkulasi)
 const RANK_ORDER: RankType[] = [
   "epic",
   "legend",
@@ -20,14 +20,14 @@ const RANK_ORDER: RankType[] = [
   "mythic_immortal",
 ];
 
-// total bintang per rank
+// Total bintang per rank
 const RANK_TOTAL_STARS: Record<RankType, number> = {
-  epic: 25,              // Epic V → Epic I
-  legend: 25,            // Legend V → Legend I
-  mythic: 25,            // 0–24
-  mythic_honor: 25,      // 25–49
-  mythic_glory: 50,      // 50–99
-  mythic_immortal: 100,  // 100+
+  epic: 25,             // Epic V → Epic I
+  legend: 25,           // Legend V → Legend I
+  mythic: 25,           // 0–24
+  mythic_honor: 25,     // 25–49
+  mythic_glory: 50,     // 50–99
+  mythic_immortal: 100, // 100+
 };
 
 export default function Calculator() {
@@ -38,17 +38,23 @@ export default function Calculator() {
   const [packageType, setPackageType] =
     useState<PackageType>("joki_bintang");
 
+  /* ================= VALIDATION ================= */
+  const invalidRank =
+    fromRank &&
+    toRank &&
+    RANK_ORDER.indexOf(fromRank) >
+      RANK_ORDER.indexOf(toRank);
+
   /* ================= LOGIC ================= */
   const calculatePrice = () => {
-    if (!fromRank || !toRank) return 0;
+    if (!fromRank || !toRank || invalidRank) return 0;
 
     const fromIndex = RANK_ORDER.indexOf(fromRank);
     const toIndex = RANK_ORDER.indexOf(toRank);
 
     if (fromIndex === -1 || toIndex === -1) return 0;
-    if (fromIndex > toIndex) return 0;
 
-    // 1️⃣ Hitung total bintang yang harus dikerjakan
+    // 1️⃣ Hitung total bintang yang dibutuhkan
     let totalStarsNeeded = 0;
 
     for (let i = fromIndex; i <= toIndex; i++) {
@@ -64,7 +70,7 @@ export default function Calculator() {
       }
     }
 
-    // 2️⃣ Konversi bintang ke harga per tier
+    // 2️⃣ Konversi ke harga berdasarkan tier
     let totalPrice = 0;
     let remainingStars = totalStarsNeeded;
 
@@ -88,6 +94,7 @@ export default function Calculator() {
 
   const totalPrice = calculatePrice();
 
+  /* ================= WHATSAPP ================= */
   const waMessage = encodeURIComponent(
     `Halo Admin, saya mau pesan jasa joki ML.
 
@@ -109,6 +116,10 @@ Estimasi Harga: Rp ${totalPrice.toLocaleString()}`
         <h2 className="text-3xl font-bold text-center">
           Kalkulator Harga Joki
         </h2>
+
+        <p className="text-sm text-center text-base-content/60 mt-2">
+          1. Pilih Paket → 2. Isi Rank → 3. Lihat Estimasi → 4. Pesan
+        </p>
 
         {/* SLOT GAMBAR */}
         <div className="mt-8 flex justify-center">
@@ -184,18 +195,24 @@ Estimasi Harga: Rp ${totalPrice.toLocaleString()}`
 
           <div>
             <label className="label">
-              <span className="label-text">Bintang Saat Ini</span>
+              <span className="label-text">
+                Bintang Saat Ini (di rank awal)
+              </span>
             </label>
             <input
               type="number"
               min={0}
               max={5}
+              disabled={!fromRank}
               className="input input-bordered w-full"
               value={currentStars}
               onChange={(e) =>
                 setCurrentStars(Number(e.target.value))
               }
             />
+            <p className="text-xs text-base-content/60 mt-1">
+              Contoh: Epic III ⭐⭐ → isi 2
+            </p>
           </div>
 
           <SelectRank
@@ -205,9 +222,21 @@ Estimasi Harga: Rp ${totalPrice.toLocaleString()}`
             options={RANK_ORDER}
           />
         </div>
+
+        {/* WARNING */}
+        {invalidRank && (
+          <div className="mt-4 alert alert-warning">
+            <span>
+              Rank akhir harus lebih tinggi atau sama dengan rank awal.
+            </span>
+          </div>
+        )}
+
         <p className="text-xs text-center text-base-content/60 mt-2">
-  * Estimasi dihitung hingga rank tujuan dalam kondisi penuh (maksimal bintang). Jika rank awal berada di sub-tier tertentu (Epic I–V), detail akan dikonfirmasi ulang oleh admin.
-</p>
+          * Estimasi dihitung hingga rank tujuan dalam kondisi penuh (bintang
+          maksimal). Jika rank awal berada di sub-tier (Epic I–V), detail
+          akan dikonfirmasi ulang oleh admin.
+        </p>
 
         {/* HASIL */}
         <div className="mt-8 p-6 border border-warning rounded-box text-center">
@@ -217,23 +246,31 @@ Estimasi Harga: Rp ${totalPrice.toLocaleString()}`
           <p className="text-3xl font-extrabold mt-2 text-warning">
             Rp {totalPrice.toLocaleString()}
           </p>
+          {totalPrice > 0 && (
+            <p className="text-sm text-base-content/70 mt-2">
+              Berdasarkan total bintang dari{" "}
+              <strong>{fromRank}</strong> ke{" "}
+              <strong>{toRank}</strong>
+            </p>
+          )}
         </div>
 
+        {/* CTA */}
         <a
           href={waLink}
           target="_blank"
           rel="noopener noreferrer"
           className={`btn btn-success btn-lg w-full mt-6 ${
-            !fromRank || !toRank || totalPrice === 0
+            !fromRank || !toRank || totalPrice === 0 || invalidRank
               ? "btn-disabled"
               : ""
           }`}
         >
-          Pesan via WhatsApp
+          Pesan & Konsultasi via WhatsApp
         </a>
 
         <p className="text-xs text-center text-base-content/60 mt-2">
-          * Harga estimasi, admin akan konfirmasi ulang
+          * Harga estimasi, admin akan konfirmasi ulang sebelum proses
         </p>
       </div>
     </section>

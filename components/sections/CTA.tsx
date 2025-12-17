@@ -1,31 +1,42 @@
 export default function CTA() {
-  const phoneNumber = "6281234567890"; // ganti nanti
-  const message = encodeURIComponent(
-    "Halo admin, saya mau joki Mobile Legends. Bisa info lebih lanjut?"
-  );
-
-  const waLink = `https://wa.me/${phoneNumber}?text=${message}`;
+ const channelLink = "https://whatsapp.com/channel/XXXXXXXX";
+  // ⬆️ ganti dengan LINK SALURAN WHATSAPP (bukan chat pribadi)
 
   return (
-    <section className="px-4 py-30 bg-base-200">
+    <section className="px-4 py-24 bg-base-200 border-t border-base-300">
       <div className="max-w-3xl mx-auto text-center">
 
-        <h2 className="text-3xl font-bold">
-          Mau dapat info promo terupdate?
+        {/* HEADLINE */}
+        <h2 className="text-3xl sm:text-4xl font-bold leading-tight">
+          Jangan Ketinggalan Promo & Slot Joki
         </h2>
 
-        <p className="mt-4 text-base-content/70">
-          Join saluran WhatsApp kami dan dapatkan info promo menarik serta update terbaru seputar layanan joki Mobile Legends.
+        <p className="mt-4 text-base sm:text-lg text-base-content/70">
+          Join <strong>Saluran WhatsApp resmi</strong> kami untuk dapatkan
+          info promo terbaru, update slot joki, dan pengumuman penting lainnya.
         </p>
 
+        {/* BENEFITS */}
+        <div className="mt-6 flex flex-col sm:flex-row justify-center gap-4 text-sm text-base-content/70">
+          <span>📢 Info Promo Terbaru</span>
+          <span>⏱ Update Slot Joki</span>
+          <span>🔥 Event & Bonus Khusus</span>
+        </div>
+
+        {/* CTA BUTTON */}
         <a
-          href={waLink}
+          href={channelLink}
           target="_blank"
           rel="noopener noreferrer"
-          className="btn btn-success btn-lg mt-8 w-full sm:w-auto"
+          className="btn btn-success btn-lg mt-10 w-full sm:w-auto px-10"
         >
-          Gabung Sekarang
+          Join Saluran WhatsApp
         </a>
+
+        {/* NOTE */}
+        <p className="mt-4 text-xs text-base-content/60">
+          * Saluran satu arah, tidak mengganggu chat pribadi kamu
+        </p>
       </div>
     </section>
   );
