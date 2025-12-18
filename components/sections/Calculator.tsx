@@ -102,7 +102,7 @@ Rank Awal: ${fromRank.toUpperCase()} ${isTieredRank(fromRank) ? `Tier ${fromSubT
 Rank Tujuan: ${toRank.toUpperCase()} ${isTieredRank(toRank) ? `Tier ${toSubTier}` : ""} (${toStars} ⭐)
 Estimasi Harga: Rp ${totalPrice.toLocaleString()}`;
     
-    return `https://wa.me/6282299930232?text=${encodeURIComponent(text)}`;
+    return `https://wa.me/6282280005665?text=${encodeURIComponent(text)}`;
   }, [name, packageType, fromRank, fromSubTier, fromStars, toRank, toSubTier, toStars, totalPrice]);
 
   return (

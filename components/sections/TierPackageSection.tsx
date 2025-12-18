@@ -65,7 +65,7 @@ Harga: Rp ${item.price.toLocaleString()}`
               </p>
 
               <a
-                href={`https://wa.me/6282299930232?text=${waMessage}`}
+                href={`https://wa.me/6282280005665?text=${waMessage}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="btn btn-success btn-sm mt-4"
