@@ -9,25 +9,25 @@ type PackageType = keyof typeof STAR_PRICE;
 type RankType = keyof typeof STAR_PRICE.joki_bintang;
 
 const RANK_ORDER: RankType[] = [
-  "epic",
-  "legend",
-  "mythic",
-  "mythic_honor",
-  "mythic_glory",
-  "mythic_immortal",
+  "Epic",
+  "Legend",
+  "Mythic",
+  "Mythic Honor",
+  "Mythic Glory",
+  "Mythic Immortal",
 ];
 
-const isTieredRank = (rank: RankType) => rank === "epic" || rank === "legend";
+const isTieredRank = (rank: RankType) => rank === "Epic" || rank === "Legend";
 
 export default function Calculator() {
   const [name, setName] = useState("");
   const [packageType, setPackageType] = useState<PackageType>("joki_bintang");
 
-  const [fromRank, setFromRank] = useState<RankType>("epic");
+  const [fromRank, setFromRank] = useState<RankType>("Epic");
   const [fromSubTier, setFromSubTier] = useState(5); 
   const [fromStars, setFromStars] = useState(0);
 
-  const [toRank, setToRank] = useState<RankType>("legend");
+  const [toRank, setToRank] = useState<RankType>("Legend");
   const [toSubTier, setToSubTier] = useState(5);
   const [toStars, setToStars] = useState(0);
 
@@ -35,9 +35,9 @@ export default function Calculator() {
   // Menentukan batas minimal dan maksimal bintang yang boleh diinput di tiap Rank
   const getStarRange = (rank: RankType) => {
     if (isTieredRank(rank)) return { min: 0, max: 5 };
-    if (rank === "mythic") return { min: 0, max: 24 };
-    if (rank === "mythic_honor") return { min: 25, max: 49 };
-    if (rank === "mythic_glory") return { min: 50, max: 99 };
+    if (rank === "Mythic") return { min: 0, max: 24 };
+    if (rank === "Mythic Honor") return { min: 25, max: 49 };
+    if (rank === "Mythic Glory") return { min: 50, max: 99 };
     return { min: 100, max: 9999 }; // Immortal
   };
 
@@ -52,15 +52,15 @@ export default function Calculator() {
   const getCumulativeStars = (rank: RankType, sub: number, stars: number) => {
     let total = 0;
     
-    // Jika Epic atau Legend, hitung berdasarkan Tier (V-I)
+    // Jika EPIC atau Legend, hitung berdasarkan Tier (V-I)
     if (isTieredRank(rank)) {
-      if (rank === "legend") total += 25; // Sudah melewati Epic
+      if (rank === "Legend") total += 25; // Sudah melewati EPIC
       const subCompleted = 5 - sub;
       total += (subCompleted * 5) + stars;
     } else {
       // Jika Mythic ke atas, bintang di profil ML adalah "Bintang Global"
       // Kita langsung pakai angka bintang tersebut (0, 25, 50, 100 dst)
-      // Ditambah 50 (karena sudah melewati Epic 25 + Legend 25)
+      // Ditambah 50 (karena sudah melewati EPIC 25 + Legend 25)
       total = 50 + stars;
     }
     return total;

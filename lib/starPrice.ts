@@ -1,19 +1,19 @@
 export const STAR_PRICE = {
   joki_bintang: {
-    epic: 6000,
-    legend: 7000,
-    mythic: 17000,
-    mythic_honor: 20000,
-    mythic_glory: 25000,
-    mythic_immortal: 29000,
+    Epic: 6000,
+    Legend: 7000,
+    Mythic: 17000,
+    "Mythic Honor": 20000,
+    "Mythic Glory": 25000,
+    "Mythic Immortal": 29000,
   },
   joki_gendong: {
-    epic: 10000,
-    legend: 12000,
-    mythic: 23000,
-    mythic_honor: 27000,
-    mythic_glory: 31000,
-    mythic_immortal: 34000,
+    Epic: 10000,
+    Legend: 12000,
+    Mythic: 23000,
+    "Mythic Honor": 27000,
+    "Mythic Glory": 31000,
+    "Mythic Immortal": 34000,
   },
 };
 
