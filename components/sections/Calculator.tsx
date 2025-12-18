@@ -31,51 +31,50 @@ export default function Calculator() {
   const [toSubTier, setToSubTier] = useState(5);
   const [toStars, setToStars] = useState(0);
 
-  /* ================= HELPERS ================= */
-  const getMaxStars = (rank: RankType) => {
-    if (isTieredRank(rank)) return 5;
-    if (rank === "mythic") return 24;
-    if (rank === "mythic_honor") return 24;
-    if (rank === "mythic_glory") return 49;
-    return 9999; // Limit untuk sang maniak bintang
+  /* ================= CONFIG LIMIT & BASE ================= */
+  // Menentukan batas minimal dan maksimal bintang yang boleh diinput di tiap Rank
+  const getStarRange = (rank: RankType) => {
+    if (isTieredRank(rank)) return { min: 0, max: 5 };
+    if (rank === "mythic") return { min: 0, max: 24 };
+    if (rank === "mythic_honor") return { min: 25, max: 49 };
+    if (rank === "mythic_glory") return { min: 50, max: 99 };
+    return { min: 100, max: 9999 }; // Immortal
   };
 
   const handleStarChange = (val: number, rank: RankType, setter: (v: number) => void) => {
-    const max = getMaxStars(rank);
-    if (val < 0) setter(0);
+    const { min, max } = getStarRange(rank);
+    if (val < min) setter(min);
     else if (val > max) setter(max);
     else setter(val);
   };
 
+  /* ================= LOGIC PERHITUNGAN ================= */
   const getCumulativeStars = (rank: RankType, sub: number, stars: number) => {
     let total = 0;
-    if (rank === "legend") total += 25;
-    if (rank === "mythic") total += 50;
-    if (rank === "mythic_honor") total += 75;
-    if (rank === "mythic_glory") total += 100;
-    if (rank === "mythic_immortal") total += 150;
-
+    
+    // Jika Epic atau Legend, hitung berdasarkan Tier (V-I)
     if (isTieredRank(rank)) {
+      if (rank === "legend") total += 25; // Sudah melewati Epic
       const subCompleted = 5 - sub;
       total += (subCompleted * 5) + stars;
     } else {
-      total += stars;
+      // Jika Mythic ke atas, bintang di profil ML adalah "Bintang Global"
+      // Kita langsung pakai angka bintang tersebut (0, 25, 50, 100 dst)
+      // Ditambah 50 (karena sudah melewati Epic 25 + Legend 25)
+      total = 50 + stars;
     }
     return total;
   };
 
-  /* ================= LOGIC ================= */
   const totalPrice = useMemo(() => {
     const start = getCumulativeStars(fromRank, fromSubTier, fromStars);
     const target = getCumulativeStars(toRank, toSubTier, toStars);
+    
     if (target <= start) return 0;
 
-    let cost = 0;
     const selisih = target - start;
-    
-    // Untuk performa lebih cepat pada bintang ribuan, kita tidak pakai loop
-    // Langsung kalikan selisih dengan harga tier tujuan
-    cost = selisih * (STAR_PRICE[packageType][toRank] || 0);
+    // Ambil harga dari tier tujuan
+    const cost = selisih * (STAR_PRICE[packageType][toRank] || 0);
     
     return cost;
   }, [fromRank, fromSubTier, fromStars, toRank, toSubTier, toStars, packageType]);
@@ -97,6 +96,7 @@ Estimasi Harga: Rp ${totalPrice.toLocaleString()}`;
       <div className="max-w-xl mx-auto">
         <h2 className="text-3xl font-bold text-center">MLBB Rank Calculator</h2>
 
+        {/* PROMO IMAGE */}
         <div className="mt-8 rounded-xl overflow-hidden border border-base-300 shadow-lg bg-white">
           <Image
             src={packageType === "joki_bintang" ? "/joki-bintang-awal-seasion-39.jpeg" : "/joki-gendong-awal-season.jpeg"}
@@ -104,6 +104,7 @@ Estimasi Harga: Rp ${totalPrice.toLocaleString()}`;
           />
         </div>
 
+        {/* PACKAGE SELECTOR */}
         <div className="mt-6 grid grid-cols-2 gap-3">
           {(["joki_bintang", "joki_gendong"] as PackageType[]).map((type) => (
             <button key={type} className={`btn ${packageType === type ? "btn-warning" : "btn-outline"}`} onClick={() => setPackageType(type)}>
@@ -112,50 +113,62 @@ Estimasi Harga: Rp ${totalPrice.toLocaleString()}`;
           ))}
         </div>
 
-        <div className="mt-6 space-y-5 bg-base-100 p-6 rounded-2xl shadow-sm border border-base-300">
+        <div className="mt-6 space-y-5 bg-base-100 p-6 rounded-2xl shadow-sm">
           <input className="input input-bordered w-full" placeholder="Nama kamu" value={name} onChange={(e) => setName(e.target.value)} />
 
+          {/* RANK AWAL */}
           <div className="space-y-2">
-            <label className="text-sm font-semibold opacity-70 italic">Rank Saat Ini</label>
+            <label className="text-sm font-semibold opacity-70">Rank Saat Ini</label>
             <SelectRank label="" value={fromRank} options={RANK_ORDER} onChange={(v) => {
-                const r = v as RankType; setFromRank(r);
-                handleStarChange(fromStars, r, setFromStars);
+                const r = v as RankType; 
+                setFromRank(r);
+                const { min } = getStarRange(r);
+                setFromStars(min); // Otomatis set ke angka minimal rank tersebut
             }} />
             <div className="grid grid-cols-2 gap-2">
               {isTieredRank(fromRank) && (
-                <select className="select select-bordered w-full" value={fromSubTier} onChange={(e) => setFromSubTier(Number(e.target.value))}>
+                <select className="select select-bordered" value={fromSubTier} onChange={(e) => setFromSubTier(Number(e.target.value))}>
                   {[5, 4, 3, 2, 1].map((n) => <option key={n} value={n}>Tier {n === 5 ? 'V' : n === 4 ? 'IV' : n === 3 ? 'III' : n === 2 ? 'II' : 'I'}</option>)}
                 </select>
               )}
-              <input type="number" className="input input-bordered w-full" placeholder={`Bintang (Maks ${getMaxStars(fromRank)})`} value={fromStars} 
-                onChange={(e) => handleStarChange(Number(e.target.value), fromRank, setFromStars)} />
+              <input type="number" className="input input-bordered w-full" 
+                placeholder={`Bintang (${getStarRange(fromRank).min}-${getStarRange(fromRank).max})`} 
+                value={fromStars} 
+                onChange={(e) => handleStarChange(Number(e.target.value), fromRank, setFromStars)} 
+              />
             </div>
           </div>
 
+          {/* RANK TUJUAN */}
           <div className="space-y-2">
-            <label className="text-sm font-semibold opacity-70 italic">Rank Tujuan</label>
+            <label className="text-sm font-semibold opacity-70">Target Rank</label>
             <SelectRank label="" value={toRank} options={RANK_ORDER} onChange={(v) => {
-                const r = v as RankType; setToRank(r);
-                handleStarChange(toStars, r, setToStars);
+                const r = v as RankType; 
+                setToRank(r);
+                const { min } = getStarRange(r);
+                setToStars(min); // Otomatis set ke angka minimal target
             }} />
             <div className="grid grid-cols-2 gap-2">
               {isTieredRank(toRank) && (
-                <select className="select select-bordered w-full" value={toSubTier} onChange={(e) => setToSubTier(Number(e.target.value))}>
+                <select className="select select-bordered" value={toSubTier} onChange={(e) => setToSubTier(Number(e.target.value))}>
                   {[5, 4, 3, 2, 1].map((n) => <option key={n} value={n}>Tier {n === 5 ? 'V' : n === 4 ? 'IV' : n === 3 ? 'III' : n === 2 ? 'II' : 'I'}</option>)}
                 </select>
               )}
-              <input type="number" className="input input-bordered w-full" placeholder={`Target ⭐ (Maks ${getMaxStars(toRank)})`} value={toStars} 
-                onChange={(e) => handleStarChange(Number(e.target.value), toRank, setToStars)} />
+              <input type="number" className="input input-bordered w-full" 
+                placeholder={`Bintang (${getStarRange(toRank).min}-${getStarRange(toRank).max})`} 
+                value={toStars} 
+                onChange={(e) => handleStarChange(Number(e.target.value), toRank, setToStars)} 
+              />
             </div>
           </div>
 
-          <div className="p-4 border-2 border-dashed border-warning rounded-xl text-center bg-warning/10">
-            <p className="text-xs uppercase text-warning font-bold tracking-widest">Total Bayar</p>
-            <p className="text-4xl font-black text-warning">Rp {totalPrice.toLocaleString()}</p>
+          <div className="p-4 border border-warning rounded-xl text-center bg-warning/5">
+            <p className="text-xs uppercase text-warning font-bold">Total Estimasi</p>
+            <p className="text-3xl font-bold text-warning font-mono">Rp {totalPrice.toLocaleString()}</p>
           </div>
 
-          <a href={waLink} target="_blank" className={`btn btn-success btn-lg w-full shadow-lg ${totalPrice === 0 ? "btn-disabled" : ""}`}>
-            Pesan ke Admin Sekarang
+          <a href={waLink} target="_blank" className={`btn btn-success btn-lg w-full ${totalPrice === 0 ? "btn-disabled" : ""}`}>
+            Pesan via WhatsApp
           </a>
         </div>
       </div>
