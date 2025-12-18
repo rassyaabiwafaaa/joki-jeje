@@ -62,7 +62,7 @@ export default function Navbar() {
 
           {/* LOGO */}
           <a className="btn btn-ghost text-xl ml-2">
-            Website Name
+            JEJEJOKI
           </a>
         </div>
 
