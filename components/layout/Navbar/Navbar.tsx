@@ -73,7 +73,7 @@ export default function Navbar() {
 
         {/* RIGHT */}
         <div className="navbar-end">
-          <a className="btn btn-warning btn-sm" href="https://wa.me/6282299930232" target="_blank">
+          <a className="btn btn-warning btn-sm" href="https://wa.me/6282280005665" target="_blank">
             Pesan Sekarang
           </a>
         </div>
