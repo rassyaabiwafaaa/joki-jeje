@@ -21,3 +21,22 @@
   --wa: 45 93% 47%;
   --er: 0 84% 60%;
 }
+
+
+/* ================= SWIPER ORANGE THEME ================= */
+
+/* Arrow */
+.hero-swiper .swiper-button-next,
+.hero-swiper .swiper-button-prev {
+  color: #f59e0b; /* tailwind warning */
+}
+
+/* Bullet */
+.hero-swiper .swiper-pagination-bullet {
+  background-color: rgba(245, 158, 11, 0.4);
+  opacity: 1;
+}
+
+.hero-swiper .swiper-pagination-bullet-active {
+  background-color: #f59e0b;
+}
