@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Jejek Joki MLBB",
+  title: "Jeje Joki MLBB",
   description: "Layanan joki Mobile Legends termurah dan terpercaya. Naikkan rank MLBB kamu dengan paket joki Epic, Legend, Mythic, dan lainnya. Order sekarang!",
 };
 
