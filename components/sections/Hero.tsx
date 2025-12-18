@@ -58,11 +58,11 @@ export default function Hero() {
           </p>
 
           <div className="mt-10 flex flex-col sm:flex-row gap-4">
-            <a href="#Calculator" className="btn btn-warning btn-lg">
+            <a href="#Kalkulator Rank" className="btn btn-warning btn-lg">
               Hitung Harga Sekarang
             </a>
 
-            <Link href="#Packages" className="btn btn-outline btn-lg">
+            <Link href="#Paket Joki" className="btn btn-outline btn-lg">
               Lihat Paket
             </Link>
           </div>

@@ -3,7 +3,7 @@ export default function CTA() {
   // ⬆️ ganti dengan LINK SALURAN WHATSAPP (bukan chat pribadi)
 
   return (
-    <section className="px-4 py-24 bg-base-200 border-t border-base-300">
+    <section className="px-4 py-24 bg-base-200 border-t border-base-300" id="CTA">
       <div className="max-w-3xl mx-auto text-center">
 
         {/* HEADLINE */}

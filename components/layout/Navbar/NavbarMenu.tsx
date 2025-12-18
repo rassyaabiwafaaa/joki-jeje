@@ -2,6 +2,7 @@ import Link from "next/link";
 
 const menus = [
   { label: "Beranda", href: "/" },
+  { label: "Cara Order", href: "/" },
   { label: "Paket Joki", href: "#paket" },
   { label: "Kalkulator Rank", href: "#kalkulator" },
 ];

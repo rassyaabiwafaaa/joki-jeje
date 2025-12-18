@@ -65,7 +65,7 @@ Harga: Rp ${item.price.toLocaleString()}`
               </p>
 
               <a
-                href={`https://wa.me/628XXXXXXXXXX?text=${waMessage}`}
+                href={`https://wa.me/6282299930232?text=${waMessage}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="btn btn-success btn-sm mt-4"
@@ -82,7 +82,7 @@ Harga: Rp ${item.price.toLocaleString()}`
   return (
     <section
       className="px-4 py-24 bg-base-100 border-b border-base-300"
-      id="Packages"
+      id="Paket Joki"
     >
       <div className="max-w-6xl mx-auto space-y-28">
 
