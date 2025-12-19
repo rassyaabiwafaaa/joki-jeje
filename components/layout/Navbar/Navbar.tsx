@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation"; // Import usePathname
 import NavbarMenu from "./NavbarMenu";
 import Image from "next/image";
 import { FaInstagram, FaWhatsapp } from "react-icons/fa";
@@ -9,19 +10,17 @@ import { whatsappNumber } from "@/lib/constant";
 export default function Navbar() {
   const [show, setShow] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
+  const pathname = usePathname(); // Inisialisasi pathname
 
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
 
       if (currentScrollY < 50) {
-        // Selalu tampil jika di posisi paling atas
         setShow(true);
       } else if (currentScrollY > lastScrollY) {
-        // Sembunyikan saat scroll ke bawah
         setShow(false);
       } else {
-        // Tampilkan kembali saat scroll ke atas
         setShow(true);
       }
 
@@ -31,6 +30,11 @@ export default function Navbar() {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, [lastScrollY]);
+
+  // KONDISI: Jika pathname bukan "/" (beranda), maka Navbar tidak dirender sama sekali
+  if (pathname !== "/") {
+    return null;
+  }
 
   return (
     <nav
@@ -66,7 +70,7 @@ export default function Navbar() {
           <div className="flex items-center gap-4 ml-1 lg:ml-2">
             <div className="relative w-8 h-8 lg:w-9 lg:h-9 flex-shrink-0">
               <Image
-                src="/logo-circle.png" // Pastikan file ini ada di folder /public
+                src="/logo-circle.png" 
                 alt="JejeJoki Logo"
                 fill
                 className="object-contain"
@@ -86,7 +90,6 @@ export default function Navbar() {
 
         {/* RIGHT SECTION */}
         <div className="navbar-end flex items-center gap-2 sm:gap-4">
-          {/* Social Icons - Hidden on very small screens if needed, or keep them small */}
           <div className="flex items-center gap-3 mr-1 sm:mr-2">
             <a 
               href="https://instagram.com/jejejoki.id" 
@@ -108,7 +111,6 @@ export default function Navbar() {
             </a>
           </div>
 
-          {/* Action Button */}
           <a 
             className="btn btn-warning btn-xs sm:btn-sm px-2 sm:px-4" 
             href={`https://wa.me/${whatsappNumber}`}
