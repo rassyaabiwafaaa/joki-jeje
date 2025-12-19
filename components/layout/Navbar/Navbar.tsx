@@ -62,7 +62,7 @@ export default function Navbar() {
           </div>
 
           {/* LOGO & BRAND */}
-          <div className="flex items-center gap-2 ml-1 lg:ml-2">
+          <div className="flex items-center gap-4 ml-1 lg:ml-2">
             <div className="relative w-8 h-8 lg:w-9 lg:h-9 flex-shrink-0">
               <Image
                 src="/logo-circle.png" // Pastikan file ini ada di folder /public
