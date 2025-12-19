@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import NavbarMenu from "./NavbarMenu";
 import Image from "next/image";
 import { FaInstagram, FaWhatsapp } from "react-icons/fa";
+import { whatsappNumber } from "@/lib/constant";
 
 export default function Navbar() {
   const [show, setShow] = useState(true);
@@ -97,7 +98,7 @@ export default function Navbar() {
               <FaInstagram />
             </a>
             <a 
-              href="https://wa.me/6282280005665" 
+              href={`https://wa.me/${whatsappNumber}`}
               target="_blank" 
               rel="noopener noreferrer"
               className="text-xl sm:text-2xl hover:text-green-500 transition-colors"
@@ -110,7 +111,7 @@ export default function Navbar() {
           {/* Action Button */}
           <a 
             className="btn btn-warning btn-xs sm:btn-sm px-2 sm:px-4" 
-            href="https://wa.me/6282280005665" 
+            href={`https://wa.me/${whatsappNumber}`}
             target="_blank"
             rel="noopener noreferrer"
           >

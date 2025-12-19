@@ -4,6 +4,7 @@ import { useState, useMemo } from "react";
 import Image from "next/image";
 import SelectRank from "../ui/SelectRank";
 import { STAR_PRICE } from "../../lib/starPrice";
+import { whatsappNumber } from "@/lib/constant";
 
 type PackageType = keyof typeof STAR_PRICE;
 type RankType = keyof typeof STAR_PRICE.joki_bintang;
@@ -102,7 +103,7 @@ Rank Awal: ${fromRank.toUpperCase()} ${isTieredRank(fromRank) ? `Tier ${fromSubT
 Rank Tujuan: ${toRank.toUpperCase()} ${isTieredRank(toRank) ? `Tier ${toSubTier}` : ""} (${toStars} ⭐)
 Estimasi Harga: Rp ${totalPrice.toLocaleString()}`;
     
-    return `https://wa.me/6282280005665?text=${encodeURIComponent(text)}`;
+    return `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(text)}`;
   }, [name, packageType, fromRank, fromSubTier, fromStars, toRank, toSubTier, toStars, totalPrice]);
 
   return (

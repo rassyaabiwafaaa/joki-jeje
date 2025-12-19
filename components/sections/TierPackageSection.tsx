@@ -1,5 +1,6 @@
 "use client";
 
+import { whatsappNumber } from "@/lib/constant";
 import Image from "next/image";
 
 type PackageItem = {
@@ -65,7 +66,7 @@ Harga: Rp ${item.price.toLocaleString()}`
               </p>
 
               <a
-                href={`https://wa.me/6282280005665?text=${waMessage}`}
+                href={`https://wa.me/${whatsappNumber}?text=${waMessage}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="btn btn-success btn-sm mt-4"

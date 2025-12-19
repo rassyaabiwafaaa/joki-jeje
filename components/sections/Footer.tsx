@@ -1,5 +1,6 @@
+import { whatsappNumber } from "@/lib/constant";
+
 export default function Footer() {
-  const phoneNumber = "6282280005665";
 
   return (
     <footer className="bg-base-300 px-4 py-10">
@@ -16,7 +17,7 @@ export default function Footer() {
         {/* Contact */}
         <div>
           <h4 className="font-semibold mb-2">Kontak</h4>
-          <p>WhatsApp: +{phoneNumber}</p>
+          <p>WhatsApp: +{whatsappNumber}</p>
           <p className="mt-1">Jam Operasional:</p>
           <p>10.00 – 22.00 WIB</p>
         </div>
