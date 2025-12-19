@@ -1,12 +1,14 @@
+// NavbarMenu.tsx
 import Link from "next/link";
 
 const menus = [
   { label: "Beranda", href: "/" },
-  { label: "Cara Order", href: "/" },
+  { label: "Cara Order", href: "#cara-order" },
   { label: "Paket Joki", href: "#paket" },
   { label: "Kalkulator Rank", href: "#kalkulator" },
 ];
 
+// Tambahkan ini agar error "Cannot find name 'Props'" hilang
 type Props = {
   isMobile?: boolean;
 };
@@ -22,7 +24,7 @@ export default function NavbarMenu({ isMobile = false }: Props) {
     >
       {menus.map((menu) => (
         <li key={menu.label}>
-          <Link href={`#${menu.label}`} >{menu.label}</Link>
+          <Link href={menu.href}>{menu.label}</Link>
         </li>
       ))}
     </ul>

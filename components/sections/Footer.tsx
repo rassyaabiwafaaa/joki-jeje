@@ -1,5 +1,5 @@
 export default function Footer() {
-  const phoneNumber = "6281234567890";
+  const phoneNumber = "6282280005665";
 
   return (
     <footer className="bg-base-300 px-4 py-10">
@@ -32,7 +32,7 @@ export default function Footer() {
       </div>
 
       <div className="mt-10 text-center text-xs text-base-content/60">
-        © {new Date().getFullYear()}. All rights reserved.
+        © {new Date().getFullYear()}. JEJEJOKI. All rights reserved.
       </div>
     </footer>
   );
