@@ -107,7 +107,7 @@ Estimasi Harga: Rp ${totalPrice.toLocaleString()}`;
   }, [name, packageType, fromRank, fromSubTier, fromStars, toRank, toSubTier, toStars, totalPrice]);
 
   return (
-    <section className="px-4 py-20 bg-base-200 min-h-screen" id="Kalkulator Rank">
+    <section className="px-4 py-20 bg-base-200 min-h-screen" id="kalkulator-rank">
       <div className="max-w-xl mx-auto">
         <h2 className="text-3xl font-bold text-center">MLBB Rank Calculator</h2>
 

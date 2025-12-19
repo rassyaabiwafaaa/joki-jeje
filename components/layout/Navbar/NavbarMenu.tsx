@@ -4,8 +4,8 @@ import Link from "next/link";
 const menus = [
   { label: "Beranda", href: "/" },
   { label: "Cara Order", href: "#cara-order" },
-  { label: "Paket Joki", href: "#paket" },
-  { label: "Kalkulator Rank", href: "#kalkulator" },
+  { label: "Paket Joki", href: "#paket-joki" },
+  { label: "Kalkulator Rank", href: "#kalkulator-rank" },
 ];
 
 // Tambahkan ini agar error "Cannot find name 'Props'" hilang

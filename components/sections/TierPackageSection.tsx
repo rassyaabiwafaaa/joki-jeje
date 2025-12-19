@@ -83,7 +83,7 @@ Harga: Rp ${item.price.toLocaleString()}`
   return (
     <section
       className="px-4 py-24 bg-base-100 border-b border-base-300"
-      id="Paket Joki"
+      id="paket-joki"
     >
       <div className="max-w-6xl mx-auto space-y-28">
 
