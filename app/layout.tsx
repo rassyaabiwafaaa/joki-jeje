@@ -27,6 +27,7 @@ export default function RootLayout({
     <html lang="en" data-theme="dark">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen flex flex-col`}
+        suppressHydrationWarning={true} // <--- Tambahkan ini untuk mengatasi error tadi
       >
         <Navbar />
         {children}
