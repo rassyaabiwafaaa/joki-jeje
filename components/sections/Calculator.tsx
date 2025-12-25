@@ -182,10 +182,15 @@ Estimasi Harga: Rp ${totalPrice.toLocaleString()}`;
             <p className="text-4xl font-bold text-warning font-mono">Rp {totalPrice.toLocaleString()}</p>
           </div>
 
-          <a href={waLink} target="_blank" className={`btn btn-success btn-lg w-full shadow-lg ${totalPrice === 0 ? "btn-disabled" : ""}`}>
+          <a 
+          // href={waLink}
+          href={`https://wa.me/${whatsappNumber}`} 
+          target="_blank" className={`btn btn-success btn-lg w-full shadow-lg ${totalPrice === 0 ? "btn-disabled" : ""}`}>
             Pesan via WhatsApp
           </a>
         </div>
+
+        <p className="pt-4">*harap chat admin dengan perhitungan yang sudah dilakukan</p>
       </div>
     </section>
   );
