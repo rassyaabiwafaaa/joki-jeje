@@ -1,2 +1,2 @@
-const whatsappNumber = "6281313079011";
+const whatsappNumber = "6282280005665";
 export { whatsappNumber };
