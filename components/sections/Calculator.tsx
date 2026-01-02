@@ -112,7 +112,7 @@ Estimasi Harga: Rp ${totalPrice.toLocaleString()}`;
 
         <div className="mt-8 rounded-xl overflow-hidden border border-base-300 shadow-lg bg-white">
           <Image
-            src={packageType === "joki_bintang" ? "/joki-bintang-awal-seasion-39.jpeg" : "/joki-gendong-awal-season.jpeg"}
+            src={packageType === "joki_bintang" ? "/1.jpeg" : "/2.jpeg"}
             alt="Promo" width={1200} height={675} className="w-full object-cover" priority
           />
         </div>
