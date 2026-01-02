@@ -18,21 +18,21 @@ const AWAL_SEASON_PACKAGES: PackageItem[] = [
 ];
 
 const HEMAT_10: PackageItem[] = [
-  { title: "Epic", price: 55000 },
-  { title: "Legend", price: 65000 },
-  { title: "Mythic", price: 165000 },
-  { title: "Mythic Honor", price: 195000 },
-  { title: "Mythic Glory", price: 245000 },
-  { title: "Mythic Immortal", price: 285000 },
+  { title: "Epic", price: 45000 },
+  { title: "Legend", price: 55000 },
+  { title: "Mythic", price: 145000 },
+  { title: "Mythic Honor", price: 185000 },
+  { title: "Mythic Glory", price: 235000 },
+  { title: "Mythic Immortal", price: 275000 },
 ];
 
 const HEMAT_15: PackageItem[] = [
-  { title: "Epic", price: 90000 },
-  { title: "Legend", price: 105000 },
-  { title: "Mythic", price: 245000 },
-  { title: "Mythic Honor", price: 290000 },
-  { title: "Mythic Glory", price: 365000 },
-  { title: "Mythic Immortal", price: 435000 },
+  { title: "Epic", price: 65000 },
+  { title: "Legend", price: 80000 },
+  { title: "Mythic", price: 215000 },
+  { title: "Mythic Honor", price: 275000 },
+  { title: "Mythic Glory", price: 350000 },
+  { title: "Mythic Immortal", price: 410000 },
 ];
 
 export default function TierPackageSection() {
@@ -41,10 +41,9 @@ export default function TierPackageSection() {
       {data.map((item) => {
         const waMessage = encodeURIComponent(
           `Halo Admin, saya mau pesan paket joki ML.
-
-Paket: ${label}
-Detail: ${item.title}
-Harga: Rp ${item.price.toLocaleString()}`
+          Paket: ${label}
+          Detail: ${item.title}
+          Harga: Rp ${item.price.toLocaleString()}`
         );
 
         return (
@@ -89,7 +88,7 @@ Harga: Rp ${item.price.toLocaleString()}`
       <div className="max-w-6xl mx-auto space-y-28">
 
         {/* ================= AWAL SEASON ================= */}
-        <div>
+        {/* <div>
           <div className="text-center max-w-2xl mx-auto">
             <h2 className="text-4xl font-bold">
               Paket Joki Awal Season 39
@@ -116,9 +115,9 @@ Harga: Rp ${item.price.toLocaleString()}`
           <div className="mt-14">
             {renderCards(AWAL_SEASON_PACKAGES, "Paket Joki Awal Season 39")}
           </div>
-        </div>
+        </div> */}
 
-        {/* ================= PAKET HEMAT ================= */}
+        {/* ================= PAKET HEMAT ORDER  ================= */}
         <div>
           <div className="text-center max-w-2xl mx-auto">
             <h2 className="text-4xl font-bold">
@@ -130,10 +129,15 @@ Harga: Rp ${item.price.toLocaleString()}`
             </p>
           </div>
 
-          <div className="mt-10 flex justify-center">
+          {/* Order 10 */}
+          <div className="mt-16">
+            <h3 className="text-2xl font-semibold mb-6">
+              Order 10 ⭐ <span className="text-warning">(Bonus 1 Star)</span>
+            </h3>
+            <div className="mt-10 flex justify-center">
             <div className="w-full max-w-3xl rounded-xl overflow-hidden border border-base-300 shadow-sm">
               <Image
-                src="/paket-hemat-joki-bintang-awal-season.jpeg"
+                src="/3.jpeg"
                 alt="Paket Hemat Joki Bintang Season 39"
                 width={1200}
                 height={675}
@@ -142,12 +146,6 @@ Harga: Rp ${item.price.toLocaleString()}`
               />
             </div>
           </div>
-
-          {/* Order 10 */}
-          <div className="mt-16">
-            <h3 className="text-2xl font-semibold mb-6">
-              Order 10 ⭐ <span className="text-warning">(Bonus 1 Star)</span>
-            </h3>
             {renderCards(HEMAT_10, "Paket Hemat Order 10 (Bonus 1 Star)")}
           </div>
 
@@ -156,6 +154,18 @@ Harga: Rp ${item.price.toLocaleString()}`
             <h3 className="text-2xl font-semibold mb-6">
               Order 15 ⭐ <span className="text-warning">(Bonus 2 Star)</span>
             </h3>
+            <div className="mt-10 flex justify-center">
+            <div className="w-full max-w-3xl rounded-xl overflow-hidden border border-base-300 shadow-sm">
+              <Image
+                src="/4.jpeg"
+                alt="Paket Hemat Joki Bintang Season 39"
+                width={1200}
+                height={675}
+                className="w-full h-auto object-cover"
+                priority
+              />
+            </div>
+          </div>
             {renderCards(HEMAT_15, "Paket Hemat Order 15 (Bonus 2 Star)")}
           </div>
         </div>
