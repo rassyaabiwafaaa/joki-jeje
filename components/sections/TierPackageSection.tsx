@@ -66,7 +66,7 @@ export default function TierPackageSection() {
 
               <a
                 // href={`https://wa.me/${whatsappNumber}?text=${waMessage}`}
-                href={`https://wa.me/${whatsappNumber}`}
+                href={`linktr.ee/jejejoki.id`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="btn btn-success btn-sm mt-4"

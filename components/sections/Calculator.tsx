@@ -197,7 +197,7 @@ Estimasi Harga: Rp ${totalPrice.toLocaleString()}`;
             <p className="text-4xl font-bold text-warning font-mono">Rp {totalPrice.toLocaleString()}</p>
           </div>
 
-          <a href={waLink} target="_blank" className={`btn btn-success btn-lg w-full shadow-lg ${totalPrice === 0 ? "btn-disabled" : ""}`}>
+          <a href={'linktr.ee/jejejoki.id'} target="_blank" className={`btn btn-success btn-lg w-full shadow-lg ${totalPrice === 0 ? "btn-disabled" : ""}`}>
             Pesan via WhatsApp
           </a>
         </div>

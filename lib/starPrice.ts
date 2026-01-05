@@ -12,8 +12,8 @@ export const STAR_PRICE = {
     Legend: 11000,
     Mythic: 24000,
     "Mythic Honor": 25500,
-    "Mythic Glory": 30000,
-    "Mythic Immortal": 35000,
+    "Mythic Glory": 0,
+    "Mythic Immortal": 0,
   },
 };
 

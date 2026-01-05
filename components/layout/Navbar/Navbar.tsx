@@ -101,7 +101,7 @@ export default function Navbar() {
               <FaInstagram />
             </a>
             <a 
-              href={`https://wa.me/${whatsappNumber}`}
+              href={`linktr.ee/jejejoki.id`}
               target="_blank" 
               rel="noopener noreferrer"
               className="text-xl sm:text-2xl hover:text-green-500 transition-colors"
