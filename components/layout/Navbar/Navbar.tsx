@@ -101,7 +101,7 @@ export default function Navbar() {
               <FaInstagram />
             </a>
             <a 
-              href={`linktr.ee/jejejoki.id`}
+              href={`http://linktr.ee/jejejoki.id`}
               target="_blank" 
               rel="noopener noreferrer"
               className="text-xl sm:text-2xl hover:text-green-500 transition-colors"
@@ -113,7 +113,7 @@ export default function Navbar() {
 
           <a 
             className="btn btn-warning btn-xs sm:btn-sm px-2 sm:px-4" 
-            href={`https://wa.me/${whatsappNumber}`}
+            href={`http://linktr.ee/jejejoki.id`}
             target="_blank"
             rel="noopener noreferrer"
           >
