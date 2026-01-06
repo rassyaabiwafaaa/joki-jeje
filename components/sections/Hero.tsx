@@ -12,19 +12,19 @@ import "swiper/css/navigation";
 
 const SLIDES = [
   {
-    src: "/joki-bintang-awal-seasion-39.jpeg",
+    src: "/1.jpeg",
     alt: "Paket Joki Bintang",
   },
   {
-    src: "/paket-joki-awal-seasion-39.jpeg",
+    src: "/2.jpeg",
     alt: "Paket Joki Awal Season 39",
   },
   {
-    src: "/paket-hemat-joki-bintang-awal-season.jpeg",
+    src: "/3.jpeg",
     alt: "Paket Hemat Joki Bintang",
   },
   {
-    src: "/joki-gendong-awal-season.jpeg",
+    src: "/4.jpeg",
     alt: "Paket Joki Gendong",
   },
 ];
