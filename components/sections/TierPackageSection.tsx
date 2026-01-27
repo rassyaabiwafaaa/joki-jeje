@@ -18,15 +18,20 @@ const AWAL_SEASON_PACKAGES: PackageItem[] = [
 ];
 
 const HEMAT_10: PackageItem[] = [
-  { title: "Epic", price: 45000 },
-  { title: "Legend", price: 55000 },
-  { title: "Mythic", price: 145000 },
-  { title: "Mythic Honor", price: 185000 },
-  { title: "Mythic Glory", price: 235000 },
-  { title: "Mythic Immortal", price: 275000 },
+  { title: "Mythic", price: 850000 },
+  { title: "Mythic Honor", price: 105000 },
+  { title: "Mythic Glory", price: 165000 },
+  { title: "Mythic Immortal", price: 215000 },
 ];
 
 const HEMAT_15: PackageItem[] = [
+  { title: "Mythic", price: 1250000 },
+  { title: "Mythic Honor", price: 1550000 },
+  { title: "Mythic Glory", price: 2450000 },
+  { title: "Mythic Immortal", price: 3200000 },
+];
+
+const MID_SEASION_HEMAT: PackageItem[] = [
   { title: "Epic", price: 65000 },
   { title: "Legend", price: 80000 },
   { title: "Mythic", price: 215000 },
@@ -91,7 +96,7 @@ export default function TierPackageSection() {
         {/* <div>
           <div className="text-center max-w-2xl mx-auto">
             <h2 className="text-4xl font-bold">
-              Paket Joki Awal Season 39
+              Paket Hemat Joki Mid Season
             </h2>
             <p className="mt-4 text-base-content/70">
               Solusi cepat buat naik rank di awal season  
@@ -102,8 +107,8 @@ export default function TierPackageSection() {
           <div className="mt-10 flex justify-center">
             <div className="w-full max-w-3xl rounded-xl overflow-hidden border border-base-300 shadow-sm">
               <Image
-                src="/paket-joki-awal-seasion-39.jpeg"
-                alt="Paket Joki Awal Season 39"
+                src="/1.jpeg"
+                alt="Paket Joki Mid Season"
                 width={1200}
                 height={675}
                 className="w-full h-auto object-cover"
@@ -113,29 +118,22 @@ export default function TierPackageSection() {
           </div>
 
           <div className="mt-14">
-            {renderCards(AWAL_SEASON_PACKAGES, "Paket Joki Awal Season 39")}
+            {renderCards(MID_SEASION_HEMAT, "Paket Joki Awal Season 39")}
           </div>
         </div> */}
 
         {/* ================= PAKET HEMAT ORDER  ================= */}
         <div>
           <div className="text-center max-w-2xl mx-auto">
-            <h2 className="text-4xl font-bold">
+            <h2 className="text-4xl font-bold mb-5">
               Paket Hemat Joki Bintang
             </h2>
-            <p className="mt-4 text-base-content/70">
+            {/* <p className="mt-4 text-base-content/70">
               Lebih hemat, dapat bonus bintang,  
               cocok buat push santai tapi pasti naik.
-            </p>
-          </div>
+            </p> */}
 
-          {/* Order 10 */}
-          <div className="mt-16">
-            <h3 className="text-2xl font-semibold mb-6">
-              Order 10 ⭐ <span className="text-warning">(Bonus 1 Star)</span>
-            </h3>
-            <div className="mt-10 flex justify-center">
-            <div className="w-full max-w-3xl rounded-xl overflow-hidden border border-base-300 shadow-sm">
+              <div className="w-full max-w-3xl rounded-xl overflow-hidden border border-base-300 shadow-sm">
               <Image
                 src="/3.jpeg"
                 alt="Paket Hemat Joki Bintang Season 39"
@@ -146,25 +144,21 @@ export default function TierPackageSection() {
               />
             </div>
           </div>
+          
+          <div className="mt-16">
+            <h3 className="text-2xl font-semibold mb-6">
+              Order 10 ⭐ <span className="text-warning">(Bonus 1 Star)</span>
+            </h3>
+            <div className="mt-10 flex justify-center">
+          </div>
             {renderCards(HEMAT_10, "Paket Hemat Order 10 (Bonus 1 Star)")}
           </div>
 
-          {/* Order 15 */}
           <div className="mt-20">
             <h3 className="text-2xl font-semibold mb-6">
               Order 15 ⭐ <span className="text-warning">(Bonus 2 Star)</span>
             </h3>
             <div className="mt-10 flex justify-center">
-            <div className="w-full max-w-3xl rounded-xl overflow-hidden border border-base-300 shadow-sm">
-              <Image
-                src="/4.jpeg"
-                alt="Paket Hemat Joki Bintang Season 39"
-                width={1200}
-                height={675}
-                className="w-full h-auto object-cover"
-                priority
-              />
-            </div>
           </div>
             {renderCards(HEMAT_15, "Paket Hemat Order 15 (Bonus 2 Star)")}
           </div>
