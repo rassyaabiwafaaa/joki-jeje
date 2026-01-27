@@ -23,10 +23,6 @@ const SLIDES = [
     src: "/3.jpeg",
     alt: "Paket Hemat Joki Bintang",
   },
-  {
-    src: "/4.jpeg",
-    alt: "Paket Joki Gendong",
-  },
 ];
 
 export default function Hero() {
